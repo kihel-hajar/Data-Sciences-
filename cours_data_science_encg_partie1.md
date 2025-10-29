@@ -5,7 +5,7 @@
 
 
 ## École Nationale de Commerce et de Gestion (ENCG) - 4ème Année
-<img src="encg settat.jpeg" style="height:464px;margin-right:432px"/>
+<img src="encg settat.png" style="height:464px;margin-right:432px"/>
 
 
 ---

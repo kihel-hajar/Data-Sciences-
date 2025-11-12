@@ -4,8 +4,11 @@
 
 ## N° apogée : 24010389
 
+ ## Description générale de la base de données : Student Performance
+ La base de données Student Performance a été élaborée par Paulo Cortez (Université du Minho, Portugal) et Alice Silva (École Secondaire Gabriel Pereira, Évora) dans le cadre d’une étude scientifique publiée en 2008. Elle provient du UCI Machine Learning Repository, une plateforme internationale de référence pour la recherche en intelligence artificielle. Cette base regroupe des informations académiques, sociales et comportementales d’élèves portugais du secondaire, inscrits dans deux écoles — Gabriel Pereira et Mousinho da Silveira — et suivant les cours de Mathématiques et de Portugais. L’objectif de cette étude est d’analyser les facteurs influençant la réussite scolaire et de modéliser la performance finale des élèves (note G3) à partir de variables personnelles (âge, sexe, absences, études des parents, temps d’étude, etc.). Le jeu de données comprend environ 33 variables et plus de 1 000 observations (395 en mathématiques et 649 en portugais). Il permet d’explorer les corrélations entre les comportements, le milieu familial et les résultats scolaires, tout en offrant un support utile pour la statistique descriptive, la prédiction de la réussite, et la mise en œuvre d’algorithmes de machine learning.
 
 
+<img src="graphe student-perfo.png" style="height:464px;margin-right:432px"/>
 
 
 # 🧮 Analyse des distributions des variables numériques (Student Performance)

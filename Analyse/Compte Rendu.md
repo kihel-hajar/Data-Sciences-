@@ -1,4 +1,4 @@
-<img src="<img src="photo-kihel hajar.jpeg" style="height:300px;margin-right:300px; float:left; border-radius:10px;"/>
+
 
 # KIHEL HAJAR
 

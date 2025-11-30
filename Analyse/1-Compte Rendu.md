@@ -224,6 +224,7 @@ pred_lr = model_lr.predict(X_test)
 rmse_lr = np.sqrt(mean_squared_error(y_test, pred_lr))
 r2_lr = r2_score(y_test, pred_lr)
 ```
+![Logo](Graphiques/Régression_linéaire.jpeg)
 
 ### Résultats (synthétique)
 
@@ -257,6 +258,7 @@ pred_poly = model_poly.predict(X_poly_test)
 rmse_poly = np.sqrt(mean_squared_error(y_test, pred_poly))
 r2_poly = r2_score(y_test, pred_poly)
 ```
+![Logo](Graphiques/Régression_polynomiale.jpeg)
 
 ### Résultats (synthétique)
 
@@ -292,6 +294,7 @@ pred_dt = dt.predict(X_test)
 rmse_dt = np.sqrt(mean_squared_error(y_test, pred_dt))
 r2_dt = r2_score(y_test, pred_dt)
 ```
+![Logo](Graphiques/Régression_par_Arbres_de_Décision.jpeg)
 
 ### Résultats (synthétique)
 
@@ -326,6 +329,8 @@ rmse_rf = np.sqrt(mean_squared_error(y_test, pred_rf))
 r2_rf = r2_score(y_test, pred_rf)
 ```
 
+![Logo](Graphiques/Régression_par_Forêts_Aléatoires.jpeg)
+
 ### Résultats (synthétique)
 
 * **RMSE = 14.11**
@@ -359,6 +364,7 @@ pred_svr = svr.predict(X_scaled_test)
 rmse_svr = np.sqrt(mean_squared_error(y_test, pred_svr))
 r2_svr = r2_score(y_test, pred_svr)
 ```
+![Logo](Graphiques/Régression_par_Forêts_Aléatoires.jpeg)
 
 ### Résultats (synthétique)
 

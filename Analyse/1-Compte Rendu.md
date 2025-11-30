@@ -398,6 +398,15 @@ for name, pred in models.items():
     print(name, 'RMSE:', np.sqrt(mean_squared_error(y_test, pred)))
     print(name, 'R²:', r2_score(y_test, pred))
 ```
+# **5. Comparaison Globale des Modèles**
+
+| Modèle                 | R²        | RMSE      | Interprétation                   |
+|------------------------|-----------|-----------|----------------------------------|
+| Régression Linéaire    | ❌ faible | ❌ élevé  | Mauvaise sur vagues              |
+| Régression Polynomiale | ⚠ moyen  | ⚠ moyen  | Capture un peu la forme          |
+| Arbre de Décision      | ⭐⭐⭐⭐⭐     | ⭐⭐⭐⭐⭐     | Le meilleur modèle               |
+| Forêt Aléatoire        | ⭐⭐⭐⭐      | ⭐⭐⭐⭐      | Très bonne robustesse            |
+| SVR                    | ❌ faible | ❌ élevé  | Mauvaise sans tuning             |
 
 ### Interprétation générale
 

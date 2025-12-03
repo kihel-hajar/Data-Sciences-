@@ -16,8 +16,6 @@
 
 # **COMPTE RENDU – Analyse et Prétraitement du Jeu de Données “Amazon Sales”**
 
-**Auteur : KIHEL HAJAR – CAC2 – 2025**
-
 ---
 
 # 1. Introduction

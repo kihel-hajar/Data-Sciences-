@@ -14,258 +14,110 @@
 
 ---
 
-## **Table des matières**
+-----
 
-1. [Introduction](#introduction)
-2. [Problématique](#problématique)
-3. [Méthodologie](#méthodologie)
+## **Sommaire**
 
-   * 3.1 Analyse exploratoire initiale
-   * 3.2 Suppression des doublons
-   * 3.3 Correction des types de données
-   * 3.4 Nettoyage des colonnes de prix
-   * 3.5 Nettoyage des évaluations
-   * 3.6 Gestion des valeurs manquantes
-   * 3.7 Vérification finale
-4. [Résultats & Discussion](#résultats--discussion)
+1.  [Introduction et Définition de la Problématique](https://www.google.com/search?q=%23introduction-et-d%C3%A9finition-de-la-probl%C3%A9matique)
+2.  [Préparation et Nettoyage des Données](https://www.google.com/search?q=%23pr%C3%A9paration-et-nettoyage-des-donn%C3%A9es)
+3.  [Analyse Exploratoire et Ingénierie des Caractéristiques (EDA & Feature Engineering)](https://www.google.com/search?q=%23analyse-exploratoire-et-ing%C3%A9nierie-des-caract%C3%A9ristiques-eda--feature-engineering)
+4.  [Méthodologie de Modélisation et Mise en Place du Pipeline](https://www.google.com/search?q=%23m%C3%A9thodologie-de-mod%C3%A9lisation-et-mise-en-place-du-pipeline)
+5.  [Résultats des Modèles et Optimisation](https://www.google.com/search?q=%23r%C3%A9sultats-des-mod%C3%A8les-et-optimisation)
+6.  [Conclusion Critique et Perspectives d'Amélioration](https://www.google.com/search?q=%23conclusion-critique-et-perspectives-dam%C3%A9lioration)
 
-   * Analyse des doublons
-   * Analyse des types
-   * Analyse des prix
-   * Analyse des évaluations
-   * Analyse des valeurs manquantes
-5. [Conclusion](#conclusion)
+-----
 
----
+## 1\. Introduction et Définition de la Problématique
 
-# **1. Introduction**
+Le point de départ de ce projet est l'analyse d'un jeu de données de ventes Amazon dans le but de **prédire la note moyenne d'un produit (`rating`)**. Pour une plateforme de e-commerce, comprendre ce qui influence la satisfaction client est capital. L'objectif a donc été de déterminer si des caractéristiques quantitatives simples (prix, réduction, volumeLe projet d'analyse a débuté par l'étude d'un jeu de données des ventes Amazon. L'ambition principale était d'établir un modèle capable de prédire la note moyenne d'un produit (rating), un indicateur essentiel de la satisfaction client pour toute plateforme de e-commerce. La nature de la variable cible, qui est continue (variant de 0.0 à 5.0), a orienté toute la méthodologie vers un problème de Régression. Avant d'entamer la modélisation, qui visait à déterminer si des caractéristiques quantitatives simples (prix, réduction, volume de revues) étaient suffisantes pour expliquer la qualité perçue des produits, un travail approfondi de nettoyage et de préparation du jeu de données s'est avéré indispensable.
 
-Le jeu de données *Amazon Sales* regroupe des informations relatives à différents produits vendus sur la plateforme Amazon, incluant leurs prix, leurs réductions, leurs évaluations et le nombre d’avis laissés par les utilisateurs. Il s’agit d’un dataset typique issu du web scraping, ce qui signifie qu’il se présente sous une forme brute, hétérogène et souvent imparfaite.
+La problématique principale de cette analyse est:
 
-Avant de procéder à toute analyse statistique ou modélisation prédictive, un travail rigoureux de **prétraitement** est nécessaire pour corriger les anomalies structurelles : doublons, formats incohérents, symboles indésirables, erreurs typographiques ou valeurs manquantes.
+Dans quelle mesure les caractéristiques quantitatives et catégorielles d'un produit Amazon (prix, réduction, volume de revues, et catégorie) permettent-elles de prédire de manière fiable la note moyenne que lui attribuent les clients (rating) ?
+-----
 
-Ce projet s’inscrit donc dans une logique de **fiabilisation de la donnée**, afin de préparer un support propre, cohérent et exploitable pour des études ultérieures sur les stratégies de prix, la popularité des produits ou encore les comportements d’achat.
+## 2\. Préparation et Nettoyage des Données
 
----
+La première phase a été cruciale, car les colonnes censées être numériques (`discounted_price`, `actual_price`, `discount_percentage`, `rating`, `rating_count`) étaient incorrectement typées en `object` (chaîne de caractères). Ce phénomène était dû à la présence de symboles non numériques comme '₹' (roupie indienne) et '%' (pourcentage). Nous avons donc procédé à la suppression de ces caractères parasites et à la conversion systématique des colonnes en types numériques (float ou Int64), une étape indispensable pour pouvoir effectuer des calculs et entraîner des modèles.
 
-# **2. Problématique**
+Parallèlement, l'étape de gestion des valeurs manquantes (imputation) a été nécessaire. Les quelques valeurs manquantes dans les colonnes `rating` et `rating_count` ont été remplacées par la **médiane** des valeurs observées (4.1 pour `rating` et 5179.0 pour `rating_count`). Ce choix de la médiane, plutôt que la moyenne, est pertinent pour des distributions très asymétriques, afin de minimiser l'impact potentiel des valeurs extrêmes sur la distribution globale et sur la modélisation ultérieure.
 
-Étant donné la nature brute et imparfaite du dataset *Amazon Sales*, la question centrale du projet peut être formulée ainsi :
+| Tâche de Nettoyage | Colonnes Concernées | Méthode Appliquée |
+| :--- | :--- | :--- |
+| **Conversion de Type** | `discounted_price`, `actual_price` | Suppression de '₹' et conversion en `float`. |
+| **Conversion de Type** | `discount_percentage` | Suppression de '%' et conversion en `float`. |
+| **Imputation des NaN** | `rating`, `rating_count` | Remplacement par la médiane respective de la colonne. |
 
-**Comment nettoyer, structurer et fiabiliser un dataset issu de web scraping afin de le rendre exploitable pour des analyses statistiques pertinentes et pour de futures démarches de modélisation prédictive basées sur les prix, les évaluations et les catégories des produits Amazon ?**
+-----
 
-Cette problématique conduit à plusieurs sous-questions :
+## 3\. Analyse Exploratoire et Ingénierie des Caractéristiques (EDA & Feature Engineering)
 
-* Quelles étapes de prétraitement permettent de corriger efficacement les incohérences et erreurs du dataset ?
-* Comment garantir que les choix méthodologiques améliorent réellement la qualité des données sans altérer leur représentativité ?
-* En quoi ces corrections influencent-elles la capacité future à analyser les tendances commerciales ou la satisfaction des utilisateurs ?
+### Analyse Exploratoire des Données (EDA)
 
----
+L'Analyse Exploratoire a confirmé que la variable cible, **`rating`**, est fortement concentrée dans la plage supérieure (entre 4.0 et 4.5), ce qui est typique des systèmes d'évaluation en ligne. Nous avons également observé que les prix (`discounted_price` et `actual_price`) présentaient une forte asymétrie positive, indiquant que la majorité des produits sont vendus à un prix bas, avec une longue queue d'articles beaucoup plus chers (outliers). Le volume des revues (`rating_count`) présentait une asymétrie similaire, avec la majorité des produits ayant peu de revues, et quelques articles très populaires.
 
-# **3. Méthodologie**
+L'analyse de corrélation, présentée sous forme de matrice, a révélé des corrélations très faibles entre le `rating` et les variables de prix ou de réduction (proches de zéro). Par exemple, la corrélation entre `rating` et `discount_percentage` était légèrement négative (-0.16), suggérant une infime tendance pour les produits fortement réduits à avoir des notes marginalement plus basses, mais sans impact explicatif significatif. Ce constat préliminaire a soulevé des doutes sur le pouvoir prédictif des seules variables numériques.
 
-Les traitements réalisés suivent une approche rigoureuse entièrement orientée vers l’amélioration de la qualité des données. Chaque opération a été choisie pour corriger une anomalie clairement identifiée lors de l’analyse exploratoire.
+### Ingénierie des Caractéristiques (Feature Engineering)
 
----
+Pour intégrer des données catégorielles complexes, nous avons simplifié la colonne **`category`** en extrayant la **`primary_category`** (la première catégorie de la hiérarchie). Nous avons ensuite créé une variable binaire nommée **`is_electronics`**, car la catégorie 'Electronics' était la plus représentée dans le jeu de données. Cette simplification a permis de réduire la dimensionnalité des données catégorielles tout en conservant l'information des segments de marché les plus importants.
 
-## **3.1 Analyse exploratoire initiale**
+-----
 
-Cette première étape a pour objectif d’observer l’état brut du dataset afin d’identifier les difficultés éventuelles.
-L’analyse exploratoire a permis de :
+## 4\. Méthodologie de Modélisation et Mise en Place du Pipeline
 
-* examiner la structure générale du fichier,
-* identifier les types de colonnes et vérifier leur cohérence,
-* repérer la présence importante de valeurs dupliquées,
-* détecter les colonnes mal typées (prix et évaluations sous forme de texte),
-* mettre en évidence des valeurs manquantes,
-* constater la présence de symboles non numériques (₹, virgules, mots parasites).
+### Préparation Finale
 
-Cette étape est indispensable : elle constitue le diagnostic initial permettant de définir les actions de nettoyage nécessaires.
+Avant l'entraînement, les étapes suivantes ont été exécutées :
 
----
+1.  **Encodage Catégoriel :** La variable `primary_category` (et toutes ses modalités) a été transformée en colonnes binaires via la technique du **One-Hot Encoding**.
+2.  **Division des Données :** Le jeu de données a été séparé en un ensemble d'entraînement (80%) pour former les modèles et un ensemble de test (20%) pour évaluer leur capacité de généralisation sur des données non vues.
+3.  **Mise à l'Échelle :** Les caractéristiques numériques ont été standardisées (à l'aide du **StandardScaler**) sur l'ensemble d'entraînement. Cette étape est essentielle pour que les modèles, notamment ceux basés sur la distance ou l'optimisation par gradient, ne soient pas biaisés par la différence d'échelle entre des variables comme le prix et le nombre de revues.
 
-## **3.2 Suppression des doublons**
+### Sélection des Modèles
 
-Un nombre particulièrement élevé de lignes identiques a été relevé.
-Les doublons faussent l’analyse car ils amplifient artificiellement certaines observations. Ils créent un biais statistique et compromettent la représentativité globale du dataset.
+Nous avons sélectionné trois architectures de modèles de Régression pour évaluer différentes approches :
 
-La suppression des doublons a été choisie comme première transformation car elle permet :
+  * **Régression Linéaire :** Pour établir une base et tester l'existence d'une relation linéaire simple.
+  * **Forêt Aléatoire (Random Forest) :** Un modèle ensemble basé sur les arbres de décision, réputé pour sa robustesse et sa capacité à gérer les relations non linéaires.
+  * **Gradient Boosting (GradientBoostingRegressor) :** Un autre modèle ensemble puissant, qui construit les arbres de manière séquentielle, corrigeant les erreurs des arbres précédents.
 
-* d’éviter une surreprésentation de certains produits,
-* de garantir que chaque ligne correspond à une observation unique,
-* d’améliorer la qualité statistique de toutes les analyses ultérieures.
+-----
 
----
+## 5\. Résultats des Modèles et Optimisation
 
-## **3.3 Correction des types de données**
+### Performance Initiale (Validation Croisée)
 
-Plusieurs colonnes naturellement numériques étaient stockées sous forme textuelle. Ce problème provenait de :
+Une première évaluation des modèles par **Validation Croisée (5-fold)** sur l'ensemble d'entraînement a confirmé la complexité de la tâche. Les scores $R^2$ initiaux étaient faibles, indiquant qu'aucun des modèles ne parvenait à expliquer une grande partie de la variance du `rating`. Le $\text{RandomForestRegressor}$ a obtenu le meilleur score de base (autour de $R^2 \approx 0.16$), soulignant que la relation, bien que faible, était mieux capturée par une approche non linéaire et arborescente.
 
-* symboles monétaires (₹),
-* virgules servant de séparateurs,
-* caractères non numériques,
-* mots intégrés dans les champs d’évaluations.
+### Optimisation et Résultats Finaux sur l'Ensemble de Test
 
-Pour rendre ces colonnes exploitables, il a été nécessaire de :
+Pour maximiser la performance, nous avons procédé à une optimisation des hyperparamètres des deux meilleurs modèles (Random Forest et Gradient Boosting) via **RandomizedSearchCV**. Cette méthode a permis d'explorer efficacement l'espace des hyperparamètres pour trouver la meilleure configuration.
 
-* nettoyer les chaînes de caractères (suppression des symboles),
-* uniformiser le format des valeurs,
-* convertir les colonnes dans des types numériques corrects (float ou int).
+Le modèle qui a finalement fourni la meilleure performance sur l'ensemble de test non vu est le **$\text{GradientBoostingRegressor}$ optimisé**.
 
-La justification méthodologique est claire : **aucune analyse statistique fiable n’est possible tant que les types ne sont pas conformes**.
+| Modèle | $\text{R}^2 \text{ (Test)}$ | $\text{MAE (Test)}$ | $\text{MSE (Test)}$ |
+| :--- | :--- | :--- | :--- |
+| $\text{RandomForestRegressor}$ (Optimisé) | 0.1935 | 0.1744 | 0.0659 |
+| **$\text{GradientBoostingRegressor}$ (Optimisé)** | **0.1968** | 0.1802 | **0.0656** |
 
----
+Avec un $R^2$ final de **0.1968**, le Gradient Boosting parvient à expliquer approximativement **20% de la variance** des notes. Ce résultat, bien que le meilleur obtenu, est modeste. L'erreur absolue moyenne ($\text{MAE}$) est d'environ **0.18**, signifiant que, en moyenne, la prédiction est fausse de moins de deux dixièmes de point. Compte tenu de l'étroite plage de variation du `rating` réel (très concentré), cette erreur est techniquement faible, mais le score $R^2$ révèle que l'information cruciale pour la prédiction manque encore.
 
-## **3.4 Nettoyage des colonnes de prix**
+-----
 
-Les colonnes `actual_price` et `discount_price` étaient les plus affectées par des symboles ou des erreurs de formatage.
-Le nettoyage a consisté à :
+## 6\. Conclusion Critique et Perspectives d'Amélioration
 
-* retirer le symbole ₹,
-* éliminer les virgules,
-* convertir les valeurs en nombres,
-* garantir une cohérence globale entre les deux colonnes (prix remisé ≤ prix réel).
+### Analyse des Limites
 
-Cette opération rend les prix exploitables pour les calculs, les comparaisons et les analyses de stratégies commerciales.
+Le score $R^2$ obtenu (inférieur à 0.20) est l'information la plus significative de cette analyse : il indique que **les prix, les réductions et les catégories ne sont que des prédicteurs très mineurs de la note d'un produit**. Ce résultat est cohérent avec l'intuition : la satisfaction client (la note) est principalement liée à la qualité intrinsèque du produit, souvent décrite dans les revues.
 
----
+La faible variance du `rating` lui-même rend la tâche de régression intrinsèquement difficile. Les produits qui restent visibles sur Amazon ont déjà subi une forte sélection naturelle et ont donc un `rating` déjà élevé, laissant peu de marge pour la prédiction.
 
-## **3.5 Nettoyage des évaluations (rating, rating_count)**
+### Perspectives d'Amélioration (Next Steps)
 
-Les colonnes d’évaluations comportaient des éléments textuels tels que :
+L'amélioration significative des performances passe inévitablement par l'exploitation des données textuelles. La prochaine étape critique doit être le **Traitement du Langage Naturel (NLP)** sur les colonnes `product_name`, `about_product`, `review_title`, et potentiellement les revues complètes.
 
-* le mot *ratings*,
-* des parenthèses,
-* des espaces inutiles,
-* des valeurs non numériques.
+  * **Analyse de Sentiment :** Extraire une *feature* d'analyse de sentiment (positif/négatif) des titres et contenus de revues.
+  * **Embedding :** Utiliser des techniques d'embedding (comme Word2Vec ou Tfidf) pour capturer le sens et les thèmes des descriptions de produits.
 
-L’objectif était d’extraire uniquement l’information pertinente afin de :
-
-* permettre une analyse fiable de la satisfaction des utilisateurs,
-* étudier les tendances de popularité des produits,
-* préparer le dataset à une potentielle modélisation à base d’évaluations.
-
----
-
-## **3.6 Gestion des valeurs manquantes**
-
-Les valeurs manquantes ont été identifiées et quantifiées.
-Plutôt que d’être supprimées, elles ont été conservées car elles représentent des réalités importantes (produits non évalués, descriptions absentes).
-
-La stratégie retenue vise à préserver la structure naturelle des données et éviter la création d’un biais artificiel.
-
----
-
-## **3.7 Vérification finale**
-
-Une dernière analyse du dataset nettoyé a permis de confirmer que :
-
-* les doublons ont été entièrement supprimés,
-* les types sont désormais corrects,
-* les valeurs non numériques ont été éliminées,
-* le fichier est cohérent et prêt pour une exploitation statistique.
-
----
-
-# **4. Résultats & Discussion**
-
-Les résultats ci-dessous illustrent l’impact concret des opérations de nettoyage.
-
----
-
-## **4.1 Analyse des doublons**
-
-### **Tableau 1 — Impact de la suppression des doublons**
-
-| Indicateur         | Valeur |
-| ------------------ | ------ |
-| Lignes initiales   | 12 310 |
-| Doublons supprimés | 1 485  |
-| Lignes finales     | 10 825 |
-
-**Interprétation :**
-L’élimination de 1 485 doublons représente une correction majeure.
-Elle assure la représentativité des données et évite les biais dans les calculs de moyennes, médianes ou analyses futures.
-
----
-
-## **4.2 Correction des types**
-
-### **Tableau 2 — Types avant/après transformation**
-
-| Colonne        | Avant (object) | Après (type numérique) |
-| -------------- | -------------- | ---------------------- |
-| actual_price   | Texte          | float64                |
-| discount_price | Texte          | float64                |
-| rating         | Texte          | float64                |
-| rating_count   | Texte          | int64                  |
-
-**Interprétation :**
-La conversion des types permet enfin d’utiliser ces colonnes dans des calculs ou modèles.
-Sans cette étape, aucune analyse statistique n’aurait été possible.
-
----
-
-## **4.3 Analyse des prix**
-
-### **Tableau 3 — Statistiques descriptives**
-
-| Indicateur | actual_price | discount_price |
-| ---------- | ------------ | -------------- |
-| Moyenne    | 1 249.50     | 899.30         |
-| Médiane    | 999.00       | 749.00         |
-| Minimum    | 49.00        | 29.00          |
-| Maximum    | 45 999.00    | 39 999.00      |
-
-**Interprétation :**
-Les écarts importants entre prix minimum et maximum montrent la diversité des produits vendus (accessoires, multimédia, électroménager…).
-La différence entre prix réel et prix remisé révèle la dominance des stratégies marketing basées sur les réductions.
-
----
-
-## **4.4 Analyse des évaluations**
-
-### **Tableau 4 — Statistiques des ratings**
-
-| Indicateur | rating | rating_count |
-| ---------- | ------ | ------------ |
-| Moyenne    | 3.92   | 985          |
-| Médiane    | 4.10   | 512          |
-| Minimum    | 1.0    | 0            |
-| Maximum    | 5.0    | 25 430       |
-
-**Interprétation :**
-La note moyenne élevée montre une tendance des utilisateurs à attribuer des évaluations positives.
-Le nombre d’avis varie fortement, mettant en lumière des produits très populaires et d’autres peu visibles.
-
----
-
-## **4.5 Analyse des valeurs manquantes**
-
-### **Tableau 5 — Valeurs manquantes**
-
-| Colonne      | Valeurs manquantes | Pourcentage |
-| ------------ | ------------------ | ----------- |
-| rating       | 438                | 4.04 %      |
-| rating_count | 512                | 4.73 %      |
-| description  | 89                 | 0.82 %      |
-
-**Interprétation :**
-Les valeurs manquantes restent marginales. Elles reflètent des réalités (produits non évalués), et leur conservation est méthodologiquement cohérente.
-
----
-
-# **5. Conclusion**
-
-Le prétraitement du dataset *Amazon Sales* a permis de transformer un fichier brut et incohérent en un jeu de données propre, structuré et exploitable. Les différentes étapes (exploration, suppression des doublons, correction des types, nettoyage des colonnes et gestion des valeurs manquantes) ont considérablement amélioré la qualité des informations disponibles.
-
-Bien que certaines limites persistent (comme les valeurs manquantes impossibles à reconstruire), le dataset est désormais adapté à :
-
-* une analyse descriptive approfondie,
-* des visualisations avancées,
-* une modélisation statistique ou prédictive,
-* des études sur les stratégies commerciales ou la satisfaction clients.
-
-Les pistes d’amélioration incluent l’ajout de variables supplémentaires, l’étude des catégories de produits ou l’intégration d’aspects temporels pour des analyses dynamiques.
-
----
+En intégrant ces nouvelles caractéristiques textuelles dans le pipeline de modélisation, nous nous attendons à ce que le $R^2$ augmente considérablement, car elles représentent probablement l'information manquante qui explique la satisfaction réelle des utilisateurs.

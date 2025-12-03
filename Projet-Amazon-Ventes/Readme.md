@@ -3,217 +3,215 @@
  
  <img src="photo-kihel hajar.jpeg" style="height:464px;margin-right:432px"/>
 
-
 # KIHEL HAJAR
 
-**Numéro d'étudiant** : 24010389  
+**Numéro d’étudiant** : 24010389
 **Classe** : CAC2
 
-<br clear="left"/>
+---
+
+# **Compte rendu d’Analyse : Prétraitement et Étude du Dataset Amazon Sales**
+
+**Date :** 30 Novembre 2025
+**Auteur :** KIHEL HAJAR
 
 ---
 
+## **Table des matières**
 
-# **COMPTE RENDU – Analyse et Prétraitement du Jeu de Données “Amazon Sales”**
+1. [Introduction](#introduction)
+2. [Problématique](#problématique)
+3. [Méthodologie](#méthodologie)
 
----
+   * 3.1 Analyse exploratoire initiale
+   * 3.2 Suppression des doublons
+   * 3.3 Correction des types de données
+   * 3.4 Nettoyage des colonnes de prix
+   * 3.5 Nettoyage des évaluations
+   * 3.6 Gestion des valeurs manquantes
+   * 3.7 Vérification finale
+4. [Résultats & Discussion](#résultats--discussion)
 
-# 1. Introduction
-
-Dans ce projet, l’objectif principal est de préparer le jeu de données *Amazon Sales* pour qu’il soit exploitable dans des analyses statistiques et, éventuellement, dans des modèles prédictifs. Le dataset initial présente de nombreuses imperfections : doublons, colonnes mal typées, symboles non conformes, valeurs manquantes et incohérences textuelles.
-Le prétraitement a donc été réalisé de manière méthodique afin de corriger ces anomalies.
-
-Les sections suivantes décrivent en détail chaque étape du traitement, les méthodes employées, les motivations derrière chaque choix, ainsi que leurs effets sur la qualité finale des données. Les tableaux récapitulatifs et leur interprétation sont fournis après cette description méthodologique.
-
----
-
-# **2. Description des étapes et méthodes utilisées**
-
-## **2.1 Analyse exploratoire initiale**
-
-La première étape a consisté en une exploration descriptive du dataset, afin d’identifier sa structure et ses éventuelles anomalies.
-Cette exploration repose sur :
-
-* la consultation des informations générales (types des colonnes, nombre de valeurs non-nulles),
-* l’affichage des premières lignes du fichier,
-* la détection des colonnes contenant des valeurs incohérentes.
-
-Cette phase préliminaire a permis de relever :
-
-* des colonnes numériques codées sous forme textuelle,
-* des symboles et caractères gênant l’interprétation (symbole ₹, virgules),
-* la présence de nombreuses valeurs manquantes,
-* l’existence de doublons.
-
-L’analyse exploratoire est une étape essentielle dans tout projet de data science, car elle permet de déterminer précisément les transformations nécessaires pour rendre le dataset exploitable.
+   * Analyse des doublons
+   * Analyse des types
+   * Analyse des prix
+   * Analyse des évaluations
+   * Analyse des valeurs manquantes
+5. [Conclusion](#conclusion)
 
 ---
 
-## **2.2 Identification et suppression des doublons**
+# **1. Introduction**
 
-Cette étape consiste à repérer les observations répétées dans le fichier. La présence de doublons peut sur-représenter certains produits et fausser toutes les analyses statistiques ou les calculs futurs.
+Le jeu de données *Amazon Sales* regroupe des informations relatives à différents produits vendus sur la plateforme Amazon, incluant leurs prix, leurs réductions, leurs évaluations et le nombre d’avis laissés par les utilisateurs. Il s’agit d’un dataset typique issu du web scraping, ce qui signifie qu’il se présente sous une forme brute, hétérogène et souvent imparfaite.
 
-La méthode consiste à :
+Avant de procéder à toute analyse statistique ou modélisation prédictive, un travail rigoureux de **prétraitement** est nécessaire pour corriger les anomalies structurelles : doublons, formats incohérents, symboles indésirables, erreurs typographiques ou valeurs manquantes.
 
-* examiner le nombre de lignes avant et après la suppression,
-* comparer les deux valeurs afin de quantifier la proportion de doublons,
-* éliminer définitivement ces lignes pour garantir l’unicité des observations.
-
-La suppression des doublons est un prérequis fondamental pour obtenir un dataset propre et fiable.
+Ce projet s’inscrit donc dans une logique de **fiabilisation de la donnée**, afin de préparer un support propre, cohérent et exploitable pour des études ultérieures sur les stratégies de prix, la popularité des produits ou encore les comportements d’achat.
 
 ---
 
-## **2.3 Correction des types de données**
+# **2. Problématique**
 
-L’une des anomalies majeures du dataset réside dans le fait que des variables naturellement numériques étaient enregistrées comme du texte, notamment :
+Étant donné la nature brute et imparfaite du dataset *Amazon Sales*, la question centrale du projet peut être formulée ainsi :
 
-* `actual_price`,
-* `discount_price`,
-* `rating`,
-* `rating_count`.
+**Comment nettoyer, structurer et fiabiliser un dataset issu de web scraping afin de le rendre exploitable pour des analyses statistiques pertinentes et pour de futures démarches de modélisation prédictive basées sur les prix, les évaluations et les catégories des produits Amazon ?**
 
-Cela est dû à la présence de symboles monétaires, de virgules et d’autres caractères non numériques.
+Cette problématique conduit à plusieurs sous-questions :
 
-La méthode appliquée consiste à :
-
-* nettoyer les chaînes de caractères en éliminant les symboles,
-* uniformiser les formats,
-* convertir les colonnes dans le type numérique approprié (float ou int).
-
-La correction des types est indispensable pour permettre les calculs statistiques, les comparaisons ou l’entraînement de modèles d’apprentissage automatique.
+* Quelles étapes de prétraitement permettent de corriger efficacement les incohérences et erreurs du dataset ?
+* Comment garantir que les choix méthodologiques améliorent réellement la qualité des données sans altérer leur représentativité ?
+* En quoi ces corrections influencent-elles la capacité future à analyser les tendances commerciales ou la satisfaction des utilisateurs ?
 
 ---
 
-## **2.4 Nettoyage approfondi des colonnes de prix**
+# **3. Méthodologie**
 
-Les colonnes de prix étaient celles contenant le plus de caractères indésirables.
-Leur nettoyage s’est effectué autour des axes suivants :
-
-* suppression du symbole monétaire,
-* suppression des virgules utilisées pour séparer les milliers,
-* conversion en nombre décimal exploitable.
-
-L’objectif est de rendre possible :
-
-* l’étude des remises,
-* l’analyse des stratégies tarifaires,
-* les comparaisons entre produits et catégories.
-
-Une fois nettoyées, les colonnes deviennent cohérentes et prêtes pour la statistique descriptive.
+Les traitements réalisés suivent une approche rigoureuse entièrement orientée vers l’amélioration de la qualité des données. Chaque opération a été choisie pour corriger une anomalie clairement identifiée lors de l’analyse exploratoire.
 
 ---
 
-## **2.5 Nettoyage des colonnes de rating et rating_count**
+## **3.1 Analyse exploratoire initiale**
 
-Les évaluations des utilisateurs sont essentielles pour comprendre la qualité perçue d’un produit. Cependant, dans le fichier initial, ces colonnes contenaient :
+Cette première étape a pour objectif d’observer l’état brut du dataset afin d’identifier les difficultés éventuelles.
+L’analyse exploratoire a permis de :
 
-* du texte inutile (“ratings”, “reviews”),
-* parfois des parenthèses,
-* ou des données incomplètes.
+* examiner la structure générale du fichier,
+* identifier les types de colonnes et vérifier leur cohérence,
+* repérer la présence importante de valeurs dupliquées,
+* détecter les colonnes mal typées (prix et évaluations sous forme de texte),
+* mettre en évidence des valeurs manquantes,
+* constater la présence de symboles non numériques (₹, virgules, mots parasites).
 
-La méthode de nettoyage a donc consisté à extraire la valeur numérique utile, puis à la convertir dans un type adapté.
-
-Ce traitement permet de disposer d’informations fiables concernant :
-
-* la note moyenne attribuée aux produits,
-* le nombre d’avis reçus,
-* la popularité réelle des articles.
+Cette étape est indispensable : elle constitue le diagnostic initial permettant de définir les actions de nettoyage nécessaires.
 
 ---
 
-## **2.6 Gestion des valeurs manquantes**
+## **3.2 Suppression des doublons**
 
-Après la conversion des types, certaines valeurs manquantes sont devenues visibles.
-Les colonnes les plus touchées étaient :
+Un nombre particulièrement élevé de lignes identiques a été relevé.
+Les doublons faussent l’analyse car ils amplifient artificiellement certaines observations. Ils créent un biais statistique et compromettent la représentativité globale du dataset.
 
-* les notes (`rating`),
-* le nombre d’avis (`rating_count`),
-* la description (`description`).
+La suppression des doublons a été choisie comme première transformation car elle permet :
 
-L’approche adoptée a été de :
-
-* identifier précisément les colonnes contenant des valeurs manquantes,
-* quantifier leur proportion,
-* évaluer leur impact sur les futures analyses.
-
-Dans ce dataset, les valeurs manquantes ont été conservées, car elles représentent une réalité importante : tous les produits ne sont pas évalués ou décrits de la même manière.
+* d’éviter une surreprésentation de certains produits,
+* de garantir que chaque ligne correspond à une observation unique,
+* d’améliorer la qualité statistique de toutes les analyses ultérieures.
 
 ---
 
-## **2.7 Vérification finale de la structure**
+## **3.3 Correction des types de données**
 
-Après l’ensemble du prétraitement, une nouvelle inspection du dataset a été effectuée.
-Cette vérification a permis de :
+Plusieurs colonnes naturellement numériques étaient stockées sous forme textuelle. Ce problème provenait de :
 
-* confirmer que les types étaient corrects,
-* s’assurer qu’aucun symbole ou caractère incohérent ne subsistait,
-* vérifier l’absence complète de doublons,
-* constater la cohérence générale du fichier.
+* symboles monétaires (₹),
+* virgules servant de séparateurs,
+* caractères non numériques,
+* mots intégrés dans les champs d’évaluations.
 
-Ce contrôle final garantit que les données sont prêtes pour une exploitation fiable.
+Pour rendre ces colonnes exploitables, il a été nécessaire de :
 
----
+* nettoyer les chaînes de caractères (suppression des symboles),
+* uniformiser le format des valeurs,
+* convertir les colonnes dans des types numériques corrects (float ou int).
 
-# **3. Résultats obtenus : tableaux et interprétations**
-
-Les tableaux suivants présentent les résultats observés après chaque étape du traitement.
-
----
-
-## **3.1 Résultats de l’analyse exploratoire initiale**
-
-### Tableau 1 – Résumé structurel avant nettoyage
-
-| Élément observé                | Résultat avant nettoyage            |
-| ------------------------------ | ----------------------------------- |
-| Nombre total de lignes         | 12 310 lignes                       |
-| Doublons détectés              | 1 485 lignes dupliquées             |
-| Colonnes numériques mal typées | 4                                   |
-| Symboles dans les prix         | Oui (₹, virgules)                   |
-| Valeurs manquantes             | Présentes, surtout dans les ratings |
-
-### Interprétation
-
-Le dataset présente des irrégularités significatives : près de 12 % des données sont dupliquées, et plusieurs colonnes essentielles sont incorrectement typées, rendant les valeurs inutilisables dans cet état. Cette situation nécessite un nettoyage rigoureux.
+La justification méthodologique est claire : **aucune analyse statistique fiable n’est possible tant que les types ne sont pas conformes**.
 
 ---
 
-## **3.2 Résultats de la suppression des doublons**
+## **3.4 Nettoyage des colonnes de prix**
 
-### Tableau 2 – Nombre de lignes avant et après suppression
+Les colonnes `actual_price` et `discount_price` étaient les plus affectées par des symboles ou des erreurs de formatage.
+Le nettoyage a consisté à :
 
-| Indicateur             | Valeur |
-| ---------------------- | ------ |
-| Lignes avant nettoyage | 12 310 |
-| Doublons supprimés     | 1 485  |
-| Lignes finales         | 10 825 |
+* retirer le symbole ₹,
+* éliminer les virgules,
+* convertir les valeurs en nombres,
+* garantir une cohérence globale entre les deux colonnes (prix remisé ≤ prix réel).
 
-### Interprétation
-
-La suppression des doublons a réduit la taille du dataset de manière notable. Cela garantit que chaque ligne représente une observation unique, améliorant la fiabilité des statistiques à venir.
+Cette opération rend les prix exploitables pour les calculs, les comparaisons et les analyses de stratégies commerciales.
 
 ---
 
-## **3.3 Résultats des corrections de types**
+## **3.5 Nettoyage des évaluations (rating, rating_count)**
 
-### Tableau 3 – Types avant/après nettoyage
+Les colonnes d’évaluations comportaient des éléments textuels tels que :
 
-| Colonne        | Type avant | Type après |
-| -------------- | ---------- | ---------- |
-| actual_price   | object     | float64    |
-| discount_price | object     | float64    |
-| rating         | object     | float64    |
-| rating_count   | object     | int64      |
+* le mot *ratings*,
+* des parenthèses,
+* des espaces inutiles,
+* des valeurs non numériques.
 
-### Interprétation
+L’objectif était d’extraire uniquement l’information pertinente afin de :
 
-La conversion des types permet enfin d’utiliser ces colonnes dans des calculs fiables. Le dataset passe ainsi d’un format brut à un format exploitable pour les analyses.
+* permettre une analyse fiable de la satisfaction des utilisateurs,
+* étudier les tendances de popularité des produits,
+* préparer le dataset à une potentielle modélisation à base d’évaluations.
 
 ---
 
-## **3.4 Statistiques descriptives des prix**
+## **3.6 Gestion des valeurs manquantes**
 
-### Tableau 4 – Résumé des prix après nettoyage
+Les valeurs manquantes ont été identifiées et quantifiées.
+Plutôt que d’être supprimées, elles ont été conservées car elles représentent des réalités importantes (produits non évalués, descriptions absentes).
+
+La stratégie retenue vise à préserver la structure naturelle des données et éviter la création d’un biais artificiel.
+
+---
+
+## **3.7 Vérification finale**
+
+Une dernière analyse du dataset nettoyé a permis de confirmer que :
+
+* les doublons ont été entièrement supprimés,
+* les types sont désormais corrects,
+* les valeurs non numériques ont été éliminées,
+* le fichier est cohérent et prêt pour une exploitation statistique.
+
+---
+
+# **4. Résultats & Discussion**
+
+Les résultats ci-dessous illustrent l’impact concret des opérations de nettoyage.
+
+---
+
+## **4.1 Analyse des doublons**
+
+### **Tableau 1 — Impact de la suppression des doublons**
+
+| Indicateur         | Valeur |
+| ------------------ | ------ |
+| Lignes initiales   | 12 310 |
+| Doublons supprimés | 1 485  |
+| Lignes finales     | 10 825 |
+
+**Interprétation :**
+L’élimination de 1 485 doublons représente une correction majeure.
+Elle assure la représentativité des données et évite les biais dans les calculs de moyennes, médianes ou analyses futures.
+
+---
+
+## **4.2 Correction des types**
+
+### **Tableau 2 — Types avant/après transformation**
+
+| Colonne        | Avant (object) | Après (type numérique) |
+| -------------- | -------------- | ---------------------- |
+| actual_price   | Texte          | float64                |
+| discount_price | Texte          | float64                |
+| rating         | Texte          | float64                |
+| rating_count   | Texte          | int64                  |
+
+**Interprétation :**
+La conversion des types permet enfin d’utiliser ces colonnes dans des calculs ou modèles.
+Sans cette étape, aucune analyse statistique n’aurait été possible.
+
+---
+
+## **4.3 Analyse des prix**
+
+### **Tableau 3 — Statistiques descriptives**
 
 | Indicateur | actual_price | discount_price |
 | ---------- | ------------ | -------------- |
@@ -222,15 +220,15 @@ La conversion des types permet enfin d’utiliser ces colonnes dans des calculs 
 | Minimum    | 49.00        | 29.00          |
 | Maximum    | 45 999.00    | 39 999.00      |
 
-### Interprétation
-
-Ces résultats montrent une forte diversité des produits : certains articles sont très abordables tandis que d’autres atteignent des prix élevés. La différence entre le prix réel et le prix remisé révèle la présence d’importantes stratégies commerciales basées sur les réductions.
+**Interprétation :**
+Les écarts importants entre prix minimum et maximum montrent la diversité des produits vendus (accessoires, multimédia, électroménager…).
+La différence entre prix réel et prix remisé révèle la dominance des stratégies marketing basées sur les réductions.
 
 ---
 
-## **3.5 Statistiques des évaluations**
+## **4.4 Analyse des évaluations**
 
-### Tableau 5 – Statistiques des ratings
+### **Tableau 4 — Statistiques des ratings**
 
 | Indicateur | rating | rating_count |
 | ---------- | ------ | ------------ |
@@ -239,15 +237,15 @@ Ces résultats montrent une forte diversité des produits : certains articles so
 | Minimum    | 1.0    | 0            |
 | Maximum    | 5.0    | 25 430       |
 
-### Interprétation
-
-La note moyenne, proche de 4, traduit une tendance générale à attribuer des évaluations positives. En revanche, le nombre d’avis varie fortement, révélant une grande différence de popularité entre produits.
+**Interprétation :**
+La note moyenne élevée montre une tendance des utilisateurs à attribuer des évaluations positives.
+Le nombre d’avis varie fortement, mettant en lumière des produits très populaires et d’autres peu visibles.
 
 ---
 
-## **3.6 Analyse des valeurs manquantes**
+## **4.5 Analyse des valeurs manquantes**
 
-### Tableau 6 – Valeurs manquantes
+### **Tableau 5 — Valeurs manquantes**
 
 | Colonne      | Valeurs manquantes | Pourcentage |
 | ------------ | ------------------ | ----------- |
@@ -255,19 +253,25 @@ La note moyenne, proche de 4, traduit une tendance générale à attribuer des �
 | rating_count | 512                | 4.73 %      |
 | description  | 89                 | 0.82 %      |
 
-### Interprétation
-
-Les valeurs manquantes restent raisonnables et ne compromettent pas l’analyse globale. Elles reflètent une réalité du marché : certains produits n’ont tout simplement pas encore été évalués.
-
----
-
-# **Conclusion générale**
-
-Le prétraitement du dataset *Amazon Sales* a permis de corriger l’ensemble des anomalies présentes dans le fichier initial. Grâce aux méthodes de nettoyage utilisées – suppression des doublons, correction des types, extraction des valeurs pertinentes, nettoyage des symboles et identification des valeurs manquantes –, le dataset est désormais propre, homogène et prêt pour des analyses plus complexes.
-Il est maintenant possible d’étudier les distributions des prix, d’analyser les comportements des consommateurs ou de développer des modèles prédictifs sur les ventes ou les ratings.
+**Interprétation :**
+Les valeurs manquantes restent marginales. Elles reflètent des réalités (produits non évalués), et leur conservation est méthodologiquement cohérente.
 
 ---
 
+# **5. Conclusion**
+
+Le prétraitement du dataset *Amazon Sales* a permis de transformer un fichier brut et incohérent en un jeu de données propre, structuré et exploitable. Les différentes étapes (exploration, suppression des doublons, correction des types, nettoyage des colonnes et gestion des valeurs manquantes) ont considérablement amélioré la qualité des informations disponibles.
+
+Bien que certaines limites persistent (comme les valeurs manquantes impossibles à reconstruire), le dataset est désormais adapté à :
+
+* une analyse descriptive approfondie,
+* des visualisations avancées,
+* une modélisation statistique ou prédictive,
+* des études sur les stratégies commerciales ou la satisfaction clients.
+
+Les pistes d’amélioration incluent l’ajout de variables supplémentaires, l’étude des catégories de produits ou l’intégration d’aspects temporels pour des analyses dynamiques.
+
+---
 
 
 

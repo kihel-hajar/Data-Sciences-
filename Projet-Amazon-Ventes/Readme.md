@@ -16,105 +16,73 @@
 **Auteur :** KIHEL HAJAR
 
 
-## Description du projet
-
-Ce projet consiste à analyser et nettoyer le jeu de données « Amazon Sales », un dataset contenant des informations détaillées sur différents produits vendus sur la plateforme Amazon.
-Le fichier original présente de nombreuses anomalies, notamment des doublons, des colonnes mal typées, des symboles non conformes, ainsi que des valeurs manquantes.
-L’objectif principal est de transformer ces données brutes en un dataset propre, cohérent et exploitable pour des analyses statistiques ou des modèles prédictifs.
-
-Le travail réalisé porte exclusivement sur le prétraitement, l’analyse exploratoire, la correction des types de variables et l’extraction de statistiques descriptives.
+Voici une **page d’accueil simple et structurée** pour votre projet, construite à partir du contenu de votre compte-rendu  :
 
 ---
 
-## Installation et prérequis
+# **Prédiction des Notes Produits – Amazon Sales Dataset**
 
-Pour exécuter ce projet, les outils suivants doivent être installés :
+## **Description du Projet**
 
-1. Python 3.9 ou version supérieure
-2. Jupyter Notebook ou Google Colab
-3. Les bibliothèques suivantes :
+Ce projet a pour objectif de **prédire la note moyenne (`rating`) attribuée aux produits Amazon**, en se basant sur des caractéristiques telles que le prix, la réduction, le nombre de revues et la catégorie du produit.
+Le travail inclut un **nettoyage approfondi des données**, une **analyse exploratoire**, la création de nouvelles caractéristiques, et l'entraînement de plusieurs modèles de régression afin d’évaluer leur capacité à estimer le `rating` réel du produit .
 
-   * pandas
-   * numpy
+---
 
-Installation des bibliothèques :
+##  **Installation**
+
+Pour exécuter le projet dans votre environnement local :
+
+### **1. Cloner le projet**
 
 ```bash
-pip install pandas numpy
+git clone <url_du_projet>
+cd <nom_du_dossier>
 ```
 
-Téléchargez ensuite le fichier `Amazon_Sales.csv` dans le répertoire de travail du notebook.
+### **2. Créer un environnement**
+
+```bash
+python -m venv venv
+source venv/bin/activate     # macOS / Linux
+venv\Scripts\activate        # Windows
+```
+
+### **3. Installer les dépendances**
+
+```bash
+pip install -r requirements.txt
+```
+
+### **4. Lancer le notebook ou script**
+
+```bash
+jupyter notebook
+```
+
+ou
+
+```bash
+python main.py
+```
 
 ---
 
-## Structure du projet
+##  **Résumé des Résultats**
 
-Le projet comprend :
+Après tests de plusieurs modèles (Régression Linéaire, Random Forest, Gradient Boosting), le meilleur score a été obtenu avec le **GradientBoostingRegressor optimisé**, avec :
 
-* Un fichier Notebook contenant les différentes étapes de nettoyage et d’analyse.
-* Un fichier README.md présentant le résumé du travail.
-* Le dataset original utilisé dans l'étude.
+*  **R² = 0.1968**
+*  **MAE = 0.1802**
+*  **MSE = 0.0656** 
 
----
+Ces résultats montrent que les variables numériques simples (prix, réduction, nombre de revues, catégorie) **expliquent moins de 20% de la variance réelle du rating**, indiquant que ces caractéristiques sont **faiblement prédictives**.
 
-## Résumé des étapes réalisées
-
-1. **Analyse exploratoire initiale**
-   Identification des types de données, des colonnes problématiques, des doublons et des valeurs manquantes.
-
-2. **Suppression des doublons**
-   Retrait des lignes identiques pour éviter les biais et améliorer la représentativité des données.
-
-3. **Correction des types de données**
-   Conversion des colonnes de prix et des évaluations en types numériques après retrait des symboles et caractères non conformes.
-
-4. **Nettoyage des colonnes de prix**
-   Suppression des symboles monétaires et des virgules pour permettre des calculs fiables.
-
-5. **Préparation des colonnes de rating**
-   Extraction des valeurs numériques et conversion en formats adaptés.
-
-6. **Étude des valeurs manquantes**
-   Quantification des absences de données et justification du choix de les conserver.
-
-7. **Statistiques descriptives**
-   Calculs des moyennes, médianes, minimums et maximums pour les prix et les évaluations.
+La conclusion principale :
+Pour améliorer significativement la performance, il sera nécessaire d’exploiter les **données textuelles** du dataset (ex: *product_name, about_product, review_title*), notamment via des techniques de **NLP** telles que le *TF-IDF*, *Word Embeddings* ou l’analyse de sentiment .
 
 ---
 
-## Résultats obtenus
-
-### Aperçu des statistiques principales
-
-| Variable       | Moyenne | Médiane | Minimum | Maximum  |
-| -------------- | ------- | ------- | ------- | -------- |
-| actual_price   | 1249.50 | 999.00  | 49.00   | 45999.00 |
-| discount_price | 899.30  | 749.00  | 29.00   | 39999.00 |
-| rating         | 3.92    | 4.10    | 1.00    | 5.00     |
-| rating_count   | 985     | 512     | 0       | 25430    |
-
-### Qualité finale des données
-
-* Nombre final de lignes : 10 825
-* Doublons supprimés : 1 485
-* Valeurs manquantes conservées dans les colonnes rating et rating_count
-* Toutes les colonnes critiques sont maintenant correctement typées et exploitables.
-
----
-
-## Conclusion
-
-Le travail de prétraitement a permis d’obtenir un dataset propre et cohérent. Le jeu de données est désormais prêt pour une analyse descriptive approfondie ou pour la construction de modèles prédictifs.
-Les résultats montrent une forte variabilité des prix et des évaluations, ainsi qu'une distribution réaliste des avis clients.
-
----
-
-## Utilisation
-
-Ouvrir le notebook dans Jupyter ou Google Colab, puis exécuter les cellules dans l’ordre.
-Les sections sont organisées pour permettre une lecture progressive du processus de nettoyage.
-
----
 
 
 

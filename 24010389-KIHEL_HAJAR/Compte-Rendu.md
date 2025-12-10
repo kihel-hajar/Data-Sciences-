@@ -1,4 +1,4 @@
- <img src="photo-kihel hajar.jpeg" style="height:464px;margin-right:432px"/>
+ <img src="photo-kihel hajar.jpeg" style="height:464px;margin-right:432px"/>   <img src="encg settat.png" style="height:464px;margin-right:432px"/>
 
 # KIHEL HAJAR
 
@@ -7,15 +7,6 @@
 
 ---
 
-# **Compte rendu d’Analyse : Prétraitement et Étude du Dataset Amazon Sales**
-
-**Date :** 10 Décembre 2025
-**Auteur :** KIHEL HAJAR
-Voici **une version complète, réécrite et adaptée exactement au style du document “Correction Projet.md”**, mais appliquée **à votre projet Linnerud**, avec **ajout d’une problématique**, une structure pédagogique, des explications profondes, et vos vrais résultats.
-
-Aucun emoji utilisé, même style analytique, même profondeur technique.
-
----
 
 # GUIDE COMPLET : ANATOMIE DU PROJET LINNERUD
 

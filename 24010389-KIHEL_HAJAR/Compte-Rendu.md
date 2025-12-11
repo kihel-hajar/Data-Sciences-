@@ -17,11 +17,6 @@
 La classification des vins a traditionnellement été réalisée grâce aux sensations humaines (dégustation, odeur, couleur) et à des analyses chimiques effectuées en laboratoire. Même si ces méthodes sont efficaces, elles restent en partie subjectives : deux experts peuvent interpréter différemment un même vin.
 Dans ce contexte, la Data Science (science des données) offre une approche plus fiable, car elle permet d’automatiser le processus de décision et d’appuyer le classement des vins sur des mesures quantifiables.
 
-L’objectif principal de ce projet est donc de répondre à la question suivante :
-est-il possible de prédire automatiquement le cépage d’un vin en se basant uniquement sur ses caractéristiques chimiques ?
-
-Une seconde interrogation, plus technique, vient compléter la première :
-un modèle de Regression (régression) peut-il réussir à reconstruire une structure de classes, normalement réservée aux modèles de Classification (classification) ?
 
 Cette question permet d’évaluer à quel point les cépages sont chimiquement distincts et si un modèle régressif peut malgré tout retrouver correctement les trois catégories.
 ---

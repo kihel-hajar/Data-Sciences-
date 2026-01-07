@@ -159,11 +159,11 @@ La visualisation des prédictions par rapport aux valeurs réelles montre une co
 
 ## 9. Conclusion Générale
 
-Ce projet met en évidence l’apport majeur de la **Data Science** dans l’analyse de problématiques environnementales et sanitaires complexes. Les résultats obtenus démontrent qu’il est possible de prédire l’impact sanitaire de la qualité de l’air à partir de données environnementales, avec un niveau de performance satisfaisant. Le modèle RandomForestRegressor parvient à expliquer une part significative de la variance de la variable cible, tout en maintenant des erreurs de prédiction modérées.
+Ce projet met en évidence l’apport important de la Data Science dans l’analyse de problématiques environnementales et sanitaires complexes. Les résultats obtenus montrent qu’il est possible de prédire l’impact sanitaire de la qualité de l’air à partir de données environnementales, avec un niveau de performance satisfaisant. Le modèle RandomForestRegressor parvient à expliquer une part significative de la variabilité de la variable cible, tout en maintenant des erreurs de prédiction modérées, ce qui confirme la pertinence de l’approche adoptée.
 
-Cependant, certaines limites doivent être soulignées. L’imputation par la moyenne constitue une simplification du traitement des données manquantes et l’absence de validation croisée limite l’évaluation de la robustesse du modèle. De plus, la santé humaine dépend de nombreux facteurs non pris en compte dans le dataset, tels que les caractéristiques démographiques ou socio-économiques.
+Malgré ces résultats encourageants, certaines limites doivent être soulignées. L’imputation des valeurs manquantes par la moyenne constitue une méthode simplifiée qui peut introduire un biais dans l’analyse. De plus, l’absence de validation croisée limite l’évaluation de la robustesse et de la capacité de généralisation du modèle. Par ailleurs, l’impact sanitaire dépend de nombreux facteurs non pris en compte dans le dataset, tels que les caractéristiques démographiques, socio-économiques ou environnementales.
 
-Malgré ces limites, ce travail illustre clairement le potentiel du Machine Learning comme **outil d’aide à la décision en santé publique**. En intégrant des données plus riches et des méthodes d’évaluation plus avancées, ce type de modèle pourrait contribuer efficacement à la prévention des risques sanitaires liés à la pollution atmosphérique.
+Des améliorations futures peuvent être envisagées afin de renforcer la qualité du modèle. L’utilisation de méthodes d’imputation plus avancées, la mise en place d’une validation croisée, la comparaison avec d’autres modèles de régression et l’intégration de nouvelles variables explicatives permettraient d’améliorer les performances. À terme, ce type de modèle pourrait constituer un outil d’aide à la décision en santé publique pour anticiper et prévenir les risques sanitaires liés à la pollution atmosphérique.
 
 ---
 

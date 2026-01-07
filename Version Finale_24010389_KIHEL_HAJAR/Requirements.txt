@@ -1,1 +1,5 @@
-
+| pandas     | Manipulation et nettoyage du dataset            |
+| numpy      | Calculs numériques nécessaires au prétraitement |
+| matplotlib | Création de graphiques (si tu en ajoutes)       |
+| seaborn    | Visualisations statistiques améliorées          |
+| jupyter    | Exécuter le notebook .ipynb contenant l’analyse |
